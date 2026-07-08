@@ -1,0 +1,11 @@
+# Fins de ligne normalisées en LF (cohérent avec Prettier endOfLine: lf).
+# Évite les diffs CRLF/LF entre Windows et la CI Linux.
+* text=auto eol=lf
+
+# Fichiers binaires : jamais de normalisation.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary

@@ -1,0 +1,282 @@
+     MODELISATION DES
+SYSTEMES D’INFORMATION
+
+Objectif du cours :
+Connaître les principales méthodes de modélisation des SI afin de devenir un
+interlocuteur averti des responsables informatiques de l’entreprise.
+               Du réel au modèle …
+
+Un modèle est une abstraction du réel
+  A* est un modèle de A pour un observateur 0 ssi A* aide O à
+  répondre aux questions qu'il se pose sur A.(Minsky 1968)
+            Qu’est ce qu’un modèle de
+                        données ?
+
+C'est une représentation simplifiée des informations
+  pertinentes d'une réalité sur laquelle on veut des
+  renseignements/
+
+Ce modèle n'est pas directement utilisable par une
+  machine (quoique...), mais c'est un mode de
+  représentation intermédiaire permettant de
+  communiquer autour du réel observé.
+            Les modèles des SI
+
+Dans le contexte des systèmes d'information, on peut
+  construire des modèles selon divers points de vue :
+  modèle de données
+  modèle de traitement
+  modèle événementiel
+  modèle organisationnel
+  modèle de processus
+  ..
+
+L’important dans un modèle est la notation utilisée et les
+  explications fournies avec le modèle pour relever les détails
+  non représentables sur le modèle.
+   Exemple d’un modèle de données
+
+La modélisation de
+données dans les SI
+la plus connue est le
+modèle Entité-
+Association
+(Méthode Merise)
+
+Notation :
+Trait avec des
+chiffres, boite
+rectangulaire ou
+ronde
+ Exemple d’un modèle de processus
+
+La modélisation d’un processus permet de décrire étape par étape
+la réalisation d’un objectif.
+
+Elle permet de détailler les ordres et messages échangés ainsi que
+les acteurs amenés à réaliser l’objectif
+    Modélisation MERISE (Entité-
+                Association)
+
+Le concept d'Entité
+
+Une entité est un objet concret ou abstrait de la réalité pour lequel on
+souhaite connaître et enregistrer des informations (Il fait partie du flux
+physique).
+Il doit être identifiable parmi les autres objets de même nature ou de
+types différents.
+
+Exemples :
+  Le client de numero de sécurité sociale : 2 78 11 75 118 154 54
+  Le cours de code I100
+  La voiture immatriculée 145 PC 75
+Les familles ou types d'Entité
+
+C'est un regroupement d'entités ayant :
+     la même nature
+     le même rôle
+     la même structure informationnelle
+
+Exemples :
+
+     Le client d'une banque est une personne
+     L'élève d'une classe est une personne
+     Le propriétaire d'un hôtel est une personne
+
+     et chaque personne peut être identifiée par un numéro de
+     sécurité sociale, un nom, un prénom, une date de naissance.
+Entité et occurrences
+
+Dans la terminologie, on parle d'entités et d'occurrences.
+     On parlera d'entité à la place de famille d'entités.
+     Les différents objets la constituant seront appelés des occurrences.
+Le concept d'attribut et de domaine
+Un attribut est une caractéristique d'une entité utile ou nécessaire
+
+     mais forcément pertinente, pour décrire l'objet.
+L'attribut prend une valeur précise pour chaque occurrence d'une
+
+     entité.
+
+                    Tout dépendra donc du besoin !!!
+Un attribut prend ses valeurs dans un ensemble de valeurs possibles
+     appelé "domaine".
+
+Catégories d'attribut
+     Obligatoire ou facultatif : Nom d'une personne/Ses autres
+     prénoms
+     Indéfinie provisoirement ou conditionnellement : Affectation/Nom
+     de jeune fille
+Le concept d’identifiant
+
+Un identifiant est un attribut ou un groupe d'attributs permettant de
+     repérer de manière unique une occurrence parmi toutes les
+     occurrences possibles d'une entité.
+Le concept d'association
+
+Une association est une correspondance entre deux ou plusieurs entités.
+Elle représente un lien symbolique entre des types d'objets.
+
+On parle d'association n-aire (binaire quand cela concerne deux objets,
+tertiaire...)
+Les attributs d'une association
+
+Un ENSEIGNANT intervient dans un COURS pour y faire un "Cours
+magistral(CM)", ou des TP, etc...
+
+"Type_ens" est un attribut de l'association Enseigner.
+L'identifiant d'une association
+
+Implicitement, l'identifiant d'une association est constitué par l'ensemble
+des identifiants des entités impliquées dans l'association.
+Les cardinalités d'une association
+
+   Les cardinalités sont des nombres (un pour le minimum et un pour le
+   maximum) représentant le nombre d'occurrences d'entité
+   qui doit participer dans
+   des occurrences
+   d'associations.
+
+   Minimum : 0 ou 1
+   Maximum : 1 ou n
+
+Toutes les combinaisons
+sont possibles :
+
+   (0,1)
+   (0,n)
+   ...
+Le concept de contrainte d'intégrité
+
+Les contraintes d'intégrité sont des règles de cohérence dans la
+structure des données que le modèle Merise ne peut pas exprimer mais
+qu'il faut expliciter à part. Certaines doivent être exprimés textuellement :
+
+  Statiques : Elles doivent être vérifiées tout le temps
+Exemple : Une date de fin est toujours supérieure à une date de fin.
+
+  Dynamiques : Elles sont validées à chaque mise à jour .
+Exemple : Un livre est prêté si le lecteur en a un nombre strictement
+inférieur à 4.
+
+  Référentielles : Elles sont liées à des associations, elles vérifient
+l'existence d'une occurrence de l'entité.
+Exemple : On ne peut créer une commande concernant un fournisseur
+qui n'existe pas.
+
+Ce type de contraintes concerne toutes les mises à jour du SI. Exemple :
+On ne peut supprimer un fournisseur pour lequel il existe encore des
+commandes non réglées.
+EXEMPLE DE MODELISATION
+
+ReproCopie est une société qui offre des services aux entreprises et aux
+particuliers en matière de traduction, d'édition, d'impression de
+documents.
+Elle dispose donc de différentes machines (ordinateurs, imprimantes...)
+Les personnes qui travaillent peuvent être dans les locaux ou à
+l'extérieur, à temps plein ou partiel ou en freelance.
+
+Afin de répondre dans des délais très courts à certaines demandes,
+ReproCopie fait souvent appelle à des freelances et dont l'activité se fait
+la plupart du temps à domicile.
+La communication avec ces personnes se fait principalement grâce à la
+messagerie évoluée où le freelance peut consulter les propositions de
+travaux et y répondre en donnant une date de remise de travail. Elle
+peut également récupérer et transmettre les fichiers.
+
+ReproCopie souhaite mettre en place une base de données lui
+permettant de gérer les travaux soumis par des clients et effectués par
+des personnes qui travaillent pour elle. Cette base de données doit
+prendre en compte certaines particularités imposées par la direction.
+  Les travaux soumis sont de nature différentes (impression, traduction) mais peuvent donc
+combiner plusieurs tâches.
+
+  De la même façon, différentes personnes qui effectuent le travail sont spécialistes d'un ou
+plusieurs domaines (traduction, mise en page) et donc un travail peut être confié à plusieurs
+personnes en même temps pour différentes tâches ou pour la même (20% du travail de traduction
+est réalisé par X, et 80% par Y)
+
+  Une personne qui s'engagera sur un travail doit indiquer le temps qu'elle consacrera à chaque
+opération et le délai de remise du résultat.
+
+  C'est ce qui apparaître sur l'exemple de "fiche de suivi des travaux" actuellement utilisée de
+manière manuelle mais qu'on souhaite informatiser.
+ELEMENTS DE SOLUTION
+   Du modèle à la base de données
+
+Le schéma logique est obtenu par transformation du schéma
+   conceptuel selon un ensemble de règles simples.
+
+On passe donc du schéma conceptuel à la base de données.
+Concept des données relationnelles
+
+Les concepts du modèle relationnel sont simples.
+Le principal est celui de table composée de colonnes.
+Chaque colonne porte un nom et peut contenir des valeurs issus d'un
+certain ensemble.
+
+Les données contenues dans la table sont organisées en lignes ayant
+toutes une structure identique:
+
+  1ère ligne = schéma de
+l'entité/association
+
+  colonne = attribut
+
+  Lignes suivantes =
+occurrences de l'entité
+Les clés
+
+Une clé dans le modèle relationnel est équivalent à un identifiant dans le
+concept MERISE.
+
+La clé d'une table est une ou plusieurs colonnes, dont chaque valeur doit
+être unique et permettre ainsi d'identifier une seule ligne du tableau.
+REGLE 1
+Chaque entité se traduit par une table (sauf si cette entité ne comporte
+pas d'attribut)
+
+                                                                                    Exemple :
+
+La clé d’une table est marquée
+par un soulignement.
+REGLE 2
+
+Une association de cardinalité (1,1) se traduit par la migration dans
+l'entité impliquée (ENT_1) des identifiants des autres entités associées
+(ENT_2) avec le statut d'attribut.
+Exemple REGLE 2 :
+
+                              On voit bien a qui le travail a été soumis !
+REGLE 2bis
+
+Pour les associations (0,1), on peut créer une nouvelle relation avec
+l'identifiant de l'entité concernée (ENT_1) comme clé et l'identifiant de
+l'entité liée (ENT_2) comme attribut.
+
+Le but est d'éviter les valeurs inexistantes qui rendent délicates la
+manipulation de données.
+Exemple REGLE 2bis :
+
+     Cela permet de prévoir le cas où plusieurs concurrents font partie de l’équipe
+                       mais que ce nombre n’est pas déterminé d’avance.
+REGLE 3
+
+Toute association sans cardinalités (...,1) donne lieu à une nouvelle
+relation avec comme clé, l'ensemble des identifiants des entités
+associées, ainsi que ses propres attributs.
+Exemple REGLE 3 :
+
+              La clé de la table "Enseigner" qui renseigne sur quel enseignant
+         enseigne quel cours, est la concaténation de la clé de la table "Cours " et
+
+                                          de la clé 'Enseignant'.
+Exemple COMPLET d’application des règles avec le cas
+REPROCOPIE
+
+               En appliquant les règles de transformation, quel schéma de BD
+                                            obtiendrez vous ?
+Correction Modélisation ReproCopie
+Correction BD ReproCopie
+Contenu de Test d’une partie de la BD
+

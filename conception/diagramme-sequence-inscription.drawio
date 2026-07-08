@@ -1,0 +1,80 @@
+<mxfile host="65bd71144e">
+  <diagram id="seq-inscription" name="Séquence - Inscription (UC01)">
+    <mxGraphModel dx="1400" dy="900" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Séquence — S'inscrire (UC01) : validation, anti-énumération, hachage Argon2id" style="text;html=1;fontStyle=1;fontSize=14;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="20" y="8" width="1000" height="24" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_ui" value=":Visiteur (React)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="20" y="40" width="180" height="530" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_ctrl" value="AuthController" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;" vertex="1" parent="1">
+          <mxGeometry x="250" y="40" width="180" height="530" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_svc" value="AuthService" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="480" y="40" width="180" height="530" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_arg" value="Argon2 (argon2id)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="710" y="40" width="180" height="530" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_sql" value="MySQL (User)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="940" y="40" width="180" height="530" as="geometry"/>
+        </mxCell>
+        <mxCell id="frame" value="alt" style="shape=umlFrame;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;fontStyle=1;align=left;verticalAlign=top;width=60;height=24;" vertex="1" parent="1">
+          <mxGeometry x="470" y="258" width="660" height="272" as="geometry"/>
+        </mxCell>
+        <mxCell id="g1" value="[ email déjà utilisé ]" style="text;html=1;fontStyle=2;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="540" y="262" width="300" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="divider" value="" style="line;strokeWidth=1;dashed=1;strokeColor=#999999;html=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="330" width="660" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="g2" value="[ email disponible ]" style="text;html=1;fontStyle=2;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="540" y="338" width="300" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="m1" value="1: POST /auth/register {email, password, pseudo}" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="110" y="100" as="sourcePoint"/><mxPoint x="340" y="100" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m2" value="2: ValidationPipe — valide le DTO (format email, robustesse du mot de passe)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="126" as="sourcePoint"/>
+            <mxPoint x="340" y="146" as="targetPoint"/>
+            <Array as="points"><mxPoint x="410" y="126"/><mxPoint x="410" y="146"/></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="m3" value="3: register(dto)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="340" y="176" as="sourcePoint"/><mxPoint x="570" y="176" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m4" value="4: findByEmail(email)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="208" as="sourcePoint"/><mxPoint x="1030" y="208" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m5" value="user | null" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1030" y="240" as="sourcePoint"/><mxPoint x="570" y="240" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m6" value="réponse NEUTRE (anti-énumération : aucune fuite sur l'existence du compte)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="304" as="sourcePoint"/><mxPoint x="340" y="304" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m7" value="5: hash(password)  // argon2id, salé" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="374" as="sourcePoint"/><mxPoint x="800" y="374" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m8" value="hashedPassword" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="800" y="406" as="sourcePoint"/><mxPoint x="570" y="406" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m9" value="6: insert(User{email, hashedPassword, pseudo, role = student})" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="438" as="sourcePoint"/><mxPoint x="1030" y="438" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m10" value="user créé" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1030" y="470" as="sourcePoint"/><mxPoint x="570" y="470" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m11" value="OK (réponse neutre identique)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="502" as="sourcePoint"/><mxPoint x="340" y="502" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m12" value="201 Created (message neutre, aucun détail révélateur)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="340" y="550" as="sourcePoint"/><mxPoint x="110" y="550" as="targetPoint"/></mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

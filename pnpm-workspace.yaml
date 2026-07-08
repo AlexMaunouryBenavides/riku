@@ -1,0 +1,10 @@
+# Racine du workspace pnpm (monorepo.r1). La racine est toujours incluse.
+packages:
+  - 'apps/*'
+  - 'packages/*'
+  - '!**/test/**'
+
+# Versions partagées centralisées (monorepo.r6) : définies une fois, référencées
+# par "catalog:" dans chaque package. On ajoute ici les deps communes au fil des étapes.
+catalog:
+  typescript: ^5.9.3

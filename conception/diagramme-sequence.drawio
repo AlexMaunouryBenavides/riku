@@ -1,0 +1,111 @@
+<mxfile host="65bd71144e">
+  <diagram id="seq-revision" name="Séquence - Réviser (UC10/UC11)">
+    <mxGraphModel dx="1400" dy="900" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="Séquence — Réviser (UC10 : démarrer une session + UC11 : répondre)" style="text;html=1;fontStyle=1;fontSize=14;align=left;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="40" y="8" width="900" height="24" as="geometry"/>
+        </mxCell>
+
+        <!-- ===================== LIFELINES ===================== -->
+        <mxCell id="ll_ui" value=":Apprenant (React)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="20" y="40" width="180" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_ctrl" value="RevisionController" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;" vertex="1" parent="1">
+          <mxGeometry x="250" y="40" width="180" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_svc" value="RevisionService" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="480" y="40" width="180" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_pol" value="SpacedRepetitionPolicy" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="710" y="40" width="180" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_sql" value="MySQL (Question / Practice)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="940" y="40" width="180" height="720" as="geometry"/>
+        </mxCell>
+        <mxCell id="ll_mdb" value="MongoDB (Session)" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;size=40;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1170" y="40" width="180" height="720" as="geometry"/>
+        </mxCell>
+
+        <!-- ===================== FRAME LOOP (UC11) ===================== -->
+        <mxCell id="frame" value="loop  [pour chaque question servie]" style="shape=umlFrame;whiteSpace=wrap;html=1;fillColor=none;strokeColor=#999999;fontStyle=2;align=left;verticalAlign=top;width=150;height=24;" vertex="1" parent="1">
+          <mxGeometry x="60" y="372" width="1290" height="376" as="geometry"/>
+        </mxCell>
+
+        <!-- ===================== MESSAGES : UC10 (démarrer) ===================== -->
+        <!-- centres X : UI=110 CTRL=340 SVC=570 POL=800 SQL=1030 MDB=1260 -->
+
+        <mxCell id="m1" value="1: POST /revision/sessions {themeIds}" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="110" y="110" as="sourcePoint"/><mxPoint x="340" y="110" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m2" value="2: startSession(userId, themeIds)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="340" y="142" as="sourcePoint"/><mxPoint x="570" y="142" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m3" value="3: selectDueCards(userId, themeIds, N)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="174" as="sourcePoint"/><mxPoint x="1030" y="174" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m4" value="cartes dues [ ]" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1030" y="206" as="sourcePoint"/><mxPoint x="570" y="206" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m5" value="4: createSession(userId, themeIds, questions)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="238" as="sourcePoint"/><mxPoint x="1260" y="238" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m6" value="session" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1260" y="270" as="sourcePoint"/><mxPoint x="570" y="270" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m7" value="session + 1ère question (SANS les réponses correctes)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="302" as="sourcePoint"/><mxPoint x="340" y="302" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m8" value="201 Created {sessionId, question}" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="340" y="334" as="sourcePoint"/><mxPoint x="110" y="334" as="targetPoint"/></mxGeometry>
+        </mxCell>
+
+        <!-- ===================== MESSAGES : UC11 (répondre) ===================== -->
+
+        <mxCell id="m9" value="5: POST /revision/sessions/{id}/answers {questionId, chosen[]}" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="110" y="410" as="sourcePoint"/><mxPoint x="340" y="410" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m10" value="6: answerQuestion(sessionId, questionId, chosen[])" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="340" y="442" as="sourcePoint"/><mxPoint x="570" y="442" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m11" value="7: getCorrectResponseIds(questionId) ; getCarte(userId, questionId)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="474" as="sourcePoint"/><mxPoint x="1030" y="474" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m12" value="correctIds, carte" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="1030" y="506" as="sourcePoint"/><mxPoint x="570" y="506" as="targetPoint"/></mxGeometry>
+        </mxCell>
+
+        <!-- self message : correction côté serveur -->
+        <mxCell id="m13" value="8: isCorrect = equals(chosen, correctIds)  // correction CÔTÉ SERVEUR" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="570" y="534" as="sourcePoint"/>
+            <mxPoint x="570" y="558" as="targetPoint"/>
+            <Array as="points"><mxPoint x="640" y="534"/><mxPoint x="640" y="558"/></Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="m14" value="9: nextState(carte.boxNumber, isCorrect)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="586" as="sourcePoint"/><mxPoint x="800" y="586" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m15" value="{ boxNumber, nextServiceDate }" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="800" y="618" as="sourcePoint"/><mxPoint x="570" y="618" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m16" value="10: updateCarte(userId, questionId, newState)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="650" as="sourcePoint"/><mxPoint x="1030" y="650" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m17" value="11: appendAnswer(sessionId, {questionId, chosen, isCorrect, timeMs})" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="682" as="sourcePoint"/><mxPoint x="1260" y="682" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m18" value="verdict + explication + réponses correctes" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="570" y="714" as="sourcePoint"/><mxPoint x="340" y="714" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="m19" value="200 OK {isCorrect, correctResponses, explanation}" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;endSize=8;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="340" y="742" as="sourcePoint"/><mxPoint x="110" y="742" as="targetPoint"/></mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

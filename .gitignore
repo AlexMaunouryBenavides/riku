@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Env / secrets — jamais commiter de secret (cf. kit configuration.md)
+.env
+.env.*
+!.env.example
+
+# Coverage / tests
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Caches
+.cache/
+.eslintcache
+
+# OS / éditeur
+.DS_Store
+Thumbs.db
+.idea/

@@ -1,0 +1,16 @@
+version: 2
+
+# Les SHA épinglés dans les workflows (ci-cd.r3) ne se mettent pas à jour seuls :
+# sans Dependabot, l'épinglage devient de l'obsolescence. Il réécrit le SHA et
+# le commentaire de version à chaque nouvelle release.
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5

@@ -26,8 +26,8 @@ la **sécurité** (transverse) et les **tests** (§7). Vise le MVP de bout en bo
 
 - [x] **1. Cadrage & environnement** _(CDA : « installer et configurer son environnement de travail »)_
 - [ ] **2. Conception** _(reste les maquettes et le plan de tests)_
-- [ ] **3. Socle technique** _(tu es ici)_
-- [ ] **4. Fondations backend** (config, bases, sécurité transverse)
+- [x] **3. Socle technique**
+- [ ] **4. Fondations backend** (config, bases, sécurité transverse) _(tu es ici)_
 - [ ] **5. Métier backend** (auth, catalogue, répétition espacée, sessions)
 - [ ] **6. Frontend**
 - [ ] **7. Tests & qualité**
@@ -51,13 +51,13 @@ la **sécurité** (transverse) et les **tests** (§7). Vise le MVP de bout en bo
 ## 2. Conception
 
 - [x] **2.1 👤 Cas d'utilisation** (acteurs, CU, mésusages, RG-01→07) · ✔ `conception/cas-utilisation.md`.
-- [x] **2.2 👤 MCD (Merise)** · `kit: mcd.md` · ✔ `conception/mcd.drawio`.
-- [x] **2.3 👤 MLD (schéma relationnel)** · `kit: mld.md` · ✔ `conception/mld.drawio`.
-- [x] **2.4 👤 MPD** · `kit: mpd.md` · ✔ `conception/mpd.drawio`. Le script de création sera produit par une **migration TypeORM**, jamais à la main, jamais `synchronize`.
+- [x] **2.2 👤 MCD (Merise)** · `kit: mcd.md` · ✔ `conception/merise/mcd.drawio`.
+- [x] **2.3 👤 MLD (schéma relationnel)** · `kit: mld.md` · ✔ `conception/merise/mld.drawio`.
+- [x] **2.4 👤 MPD** · `kit: mpd.md` · ✔ `conception/merise/mpd.drawio`. Le script de création sera produit par une **migration TypeORM**, jamais à la main, jamais `synchronize`.
 - [x] **2.5 👤 Modèle documentaire MongoDB** · ✔ `conception/modele-donnees.md` §4.
-- [x] **2.6 👤 Diagramme de classes (UML)** · ✔ `conception/diagramme-classes.drawio`.
-- [x] **2.7 👤 Diagramme de séquence — UC10** _(CU pivot)_ · ✔ `conception/diagramme-sequence.drawio`.
-- [x] **2.8 👤 Diagrammes de séquence — UC01 & UC11** · ✔ Argon2id + anti-énumération, correction côté serveur.
+- [x] **2.6 👤 Diagramme de classes (UML)** · ✔ `conception/uml/diagramme-classes.drawio`.
+- [x] **2.7 👤 Diagramme de séquence — UC10** _(CU pivot)_ · ✔ `conception/uml/diagramme-sequence.drawio`.
+- [x] **2.8 👤 Diagrammes de séquence — UC01 & UC11** · ✔ `conception/uml/diagramme-sequence-inscription.drawio` (Argon2id + anti-énumération) et correction côté serveur.
 - [x] **2.9 👤 Spécifications techniques** · `kit: clean-archi-back.md`, `security.md` · ✔ `conception/specifications-techniques.md`.
 - [ ] **2.10 👤 Plan de tests (définition)** · `kit: _strategy.md` · ✔ Validé si : ce qui est testé (unitaire / intégration / e2e / sécurité) et la fonctionnalité représentative (UC10) sont désignés.
       _À faire avant d'écrire le premier test (§7). Peut se faire dès maintenant._
@@ -75,7 +75,9 @@ la **sécurité** (transverse) et les **tests** (§7). Vise le MVP de bout en bo
       configs générées supprimées au profit de celles de la racine (une seule source de vérité pour ESLint et Prettier) ·
       couche ESLint React (`react-hooks`, `jsx-a11y`) · catalogue pnpm sur **TypeScript 6.0**.
       **Aucune dépendance métier installée**, aucun module créé : c'est ton travail, à partir de 3.3.
-- [ ] **3.3 🤖 CI minimale** (GitHub Actions : install + `pnpm verify` au push/PR) · `kit: ci-cd.md` · ✔ Validé si : pipeline vert sur un commit de base.
+- [x] **3.3 🤖 CI minimale** (GitHub Actions : install + `pnpm verify` au push/PR) · `kit: ci-cd.md` · ✔ Validé — `.github/workflows/ci.yml` : déclencheurs `push` (main) + `pull_request` (`r1`), `pnpm/action-setup` puis `actions/setup-node` avec `cache: pnpm` et install `--frozen-lockfile` (`r2`), actions épinglées au **SHA complet** (`r3`), `permissions: contents: read` (`r4`), `concurrency` + `cancel-in-progress` (`r6`), portes `pnpm format` et `pnpm verify` bloquantes (`r5`, `r7`).
+      Workflow validé localement par `actionlint` (0 erreur). `.github/dependabot.yml` maintient les SHA à jour — sans lui, l'épinglage devient de l'obsolescence.
+      _La version de pnpm n'est pas répétée dans le workflow : `pnpm/action-setup` la lit depuis `packageManager` du `package.json`._
 
 ---
 
@@ -166,4 +168,4 @@ _(CDA : « préparer le déploiement » + « mise en production DevOps »)_
 - Les `↗` sont optionnels : ne les fais que si tu es en avance sur ton budget (~40 h de dev, échéance début septembre).
 - **Protocole après chaque tâche 👤 :** `pnpm verify` d'abord, puis « _Claude, vérifie_ ». Sans `pnpm verify`,
   la revue perd son temps sur des points que la machine relève gratuitement (format, complexité, types).
-- **Prochaine action :** 3.3 (CI minimale, 🤖) — ou directement 4.1 si tu veux commencer à coder tout de suite.
+- **Prochaine action :** 4.1 — config typée et validée au boot (`@nestjs/config`). C'est à toi.

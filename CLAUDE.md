@@ -40,7 +40,8 @@ Les règles ne sont pas dans ta tête : elles sont écrites et versionnées.
   s'appliquent par artefact).
 - **`conception/`** — les décisions de CE projet :
   - `cas-utilisation.md` — besoins, cas d'usage, **règles de gestion (RG-01→07)**, cas de mésusage ;
-  - `modele-donnees.md` + `mcd/mld/mpd.drawio` — le modèle de données (SQL + NoSQL) ;
+  - `modele-donnees.md` + `merise/{mcd,mld,mpd}.drawio` — le modèle de données (SQL + NoSQL) ;
+  - `uml/` — diagramme de classes et diagrammes de séquence ;
   - `specifications-techniques.md` — archi en couches + stratégie de sécurité ;
   - `plan-de-travail.md` — le suivi des tâches.
 

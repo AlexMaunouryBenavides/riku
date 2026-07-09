@@ -1,0 +1,51 @@
+name: CI
+
+# ci-cd.r1 — gater les PR, et vérifier la branche par défaut après merge.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# ci-cd.r4 — moindre privilège : le GITHUB_TOKEN ne peut que lire le dépôt.
+permissions:
+  contents: read
+
+# ci-cd.r6 — un push qui en remplace un autre annule le run devenu obsolète.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Vérification (typecheck · lint · tests)
+    runs-on: ubuntu-24.04
+    steps:
+      # ci-cd.r3 — actions épinglées à un SHA de commit complet : un tag est
+      # mobile, un SHA est immuable. Dependabot réécrit SHA + commentaire.
+      - name: Récupérer le dépôt
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      # Avant setup-node : celui-ci a besoin de pnpm pour résoudre son cache.
+      # Aucune version ici — elle est lue depuis `packageManager` du package.json,
+      # seule source de vérité (sinon les deux divergent en silence).
+      - name: Installer pnpm
+        uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+
+      - name: Installer Node.js
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
+        with:
+          # Node 26 : version Current assumée, cf. specifications-techniques.md §2 écart (G).
+          node-version: 26
+          cache: pnpm
+
+      # ci-cd.r2 — install déterministe : échoue si le lockfile diverge des manifestes.
+      - name: Installer les dépendances
+        run: pnpm install --frozen-lockfile
+
+      # ci-cd.r7 — portes qualité bloquantes. Mêmes commandes qu'en local :
+      # une CI qui vérifie autre chose que `pnpm verify` finit par diverger.
+      - name: Vérifier le formatage
+        run: pnpm format
+
+      - name: Typecheck · lint · tests
+        run: pnpm verify

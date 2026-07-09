@@ -1,4 +1,4 @@
-# Brief de setup — QuizDev
+# Brief de setup — Riku
 
 > **Pour Claude Code (session d'implémentation).** Ce document décrit le squelette à installer.
 > Objectif : un monorepo qui **démarre et passe `pnpm verify`**, **sans aucune fonctionnalité métier** encore.

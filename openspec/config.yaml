@@ -5,7 +5,7 @@ schema: spec-driven
 # (point d'extension natif ; cf. kit/AGENTS.kit.md §4)
 # ─────────────────────────────────────────────────────────────────────────────
 context: |
-  Projet : QuizDev — application web de révision par répétition espacée (titre CDA).
+  Projet : Riku — application web de révision par répétition espacée (titre CDA).
   Monorepo pnpm : apps/api (NestJS), apps/web (React + Vite), packages/shared (types & enums).
 
   Stack figée (cf. conception/specifications-techniques.md) :

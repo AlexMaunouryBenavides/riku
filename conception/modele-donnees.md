@@ -1,4 +1,4 @@
-# Modèle de données — QuizDev *(titre de travail)*
+# Modèle de données — Riku
 
 > Document de référence pour dessiner le **MCD** (draw.io) et poser le **modèle NoSQL**.
 > Suit `kit/rules/modeling/mcd.md` : entités au **pluriel**, identifiants **entiers auto-incrémentés** (soulignés),

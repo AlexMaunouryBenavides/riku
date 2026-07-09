@@ -98,7 +98,7 @@ Sinon, état client global mutant résiduel ?    → Zustand (petit store — ch
 **État complexe local :** préférer `useReducer` quand plusieurs sous-valeurs évoluent ensemble selon des
 actions (react.dev, « reducer together with context » pour le cas global).
 
-**Rappel :** l'essentiel de l'état d'une SPA « data-driven » comme QuizDev est **de l'état serveur** (thèmes,
+**Rappel :** l'essentiel de l'état d'une SPA « data-driven » comme Riku est **de l'état serveur** (thèmes,
 questions, progression) → il est géré par TanStack Query. L'état client se limite à l'UI (question courante
 d'une session côté écran, ouverture d'une modale, etc.).
 

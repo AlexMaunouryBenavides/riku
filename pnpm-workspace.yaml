@@ -9,4 +9,4 @@ packages:
 catalog:
   # TypeScript 7.0 est publié mais inutilisable ici : typescript-eslint exige
   # `<6.1.0` et ts-jest `<7`. On reste sur la 6.0, acceptée par les deux.
-  typescript: ^6.0.2
+  typescript: ^6.0.3

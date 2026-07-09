@@ -1,4 +1,4 @@
-# Cas d'utilisation — QuizDev *(titre de travail)*
+# Cas d'utilisation — Riku
 
 > **Projet :** application web de révision par quiz sur le développement (JS/TS, NestJS, React, SQL, sécurité…),
 > qui sert aussi d'outil de révision personnel pour le CDA.
@@ -59,7 +59,7 @@ actor "Planificateur\n(temps)" as T
 
 A <|-- ADM  ' l'admin hérite de l'apprenant
 
-rectangle "QuizDev" {
+rectangle "Riku" {
   package "Compte & sécurité" {
     usecase "S'inscrire"            as UC01
     usecase "Se connecter"         as UC02

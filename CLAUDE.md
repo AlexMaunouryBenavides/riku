@@ -1,4 +1,4 @@
-# Instructions projet — QuizDev (pour Claude Code)
+# Instructions projet — Riku (pour Claude Code)
 
 ## Qui je suis et ce que j'attends de toi
 
@@ -76,7 +76,7 @@ est déjà couvert couche 1). Rends une liste de points EXPLIQUÉS, **chacun cit
 
 - Si je ne devine pas le contenu d'un dossier à son nom, la structure est mauvaise.
 - **Ne jamais faire confiance au client** : toute entrée est validée côté serveur.
-- Spécifique QuizDev : la **correction d'une réponse se fait côté serveur** ; la bonne réponse
+- Spécifique Riku : la **correction d'une réponse se fait côté serveur** ; la bonne réponse
   n'est **jamais** envoyée au front avant soumission (anti-triche).
 - Aucun secret en dur : variables d'environnement, jamais commitées.
 

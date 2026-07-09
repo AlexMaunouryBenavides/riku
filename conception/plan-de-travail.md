@@ -1,4 +1,4 @@
-# Plan de travail — QuizDev _(titre de travail)_
+# Plan de travail — Riku
 
 > **Tableau de bord du projet CDA.** Une tâche = une action atomique, cochable, avec un critère de validation.
 > Tu coches au fur et à mesure ; tu peux demander à Claude de **valider une étape** ou de **vérifier ton code**.
@@ -19,9 +19,9 @@ l'**accès SQL + NoSQL** (phase 3), la **sécurité** (transverse) et les **test
 
 ## Vue d'ensemble (progression par phase)
 
-- [x] **Phase 0** — Cadrage & environnement de travail
-- [x] **Phase 1** — Conception _(tu es ici)_
-- [ ] **Phase 2** — Socle technique (squelettes + infra locale)
+- [ ] **Phase 0** — Cadrage & environnement de travail _(reste 0.2, 0.3)_
+- [ ] **Phase 1** — Conception _(reste 1.9, 1.11)_
+- [ ] **Phase 2** — Socle technique (squelettes + infra locale) _(tu es ici)_
 - [ ] **Phase 3** — Implémentation backend
 - [ ] **Phase 4** — Implémentation frontend
 - [ ] **Phase 5** — Tests & qualité
@@ -36,9 +36,12 @@ _(CDA : « Installer et configurer son environnement de travail »)_
 
 - [x] **0.1 — Figer le périmètre MVP** · ✔ Validé — `conception/cas-utilisation.md` §1 (périmètre + hors-scope).
 - [ ] **0.2 — Installer la boîte à outils** (Node LTS, pnpm/npm, Nest CLI, Vite, Git, Docker Desktop) · ✔ Validé si : `node -v`, `docker -v`, `git -v`, `nest --version` répondent.
-- [ ] **0.3 — Installer MySQL + MongoDB en local** (via Docker) · ✔ Validé si : les deux conteneurs démarrent et acceptent une connexion.
-- [ ] **0.4 — Initialiser le dépôt Git + structure monorepo** · `kit: monorepo.md`, `git-workflow.md` · ✔ Validé si : repo `git init`, `.gitignore`, dossiers `apps/api` + `apps/web` (ou équivalent).
-- [ ] **0.5 — Appliquer le kit** (config.yaml + tooling eslint/prettier/tsconfig/hadolint) · `kit: AGENTS.kit.md` · ✔ Validé si : `lint` et `format` tournent, résumé des règles appliquées/écartées produit.
+      ⚠ **Bloqué** : `node -v` → **v25.4.0**, une version _Current_ (impaire), jamais promue LTS. Installer **Node 24 LTS**.
+      Le reste répond : pnpm 10.0.0 · git 2.47.0 · Docker 29.5.2 + Compose v5.1.4 · Nest CLI 11.0.21.
+- [x] **0.3 — Installer MySQL + MongoDB en local** (via Docker) · ✔ Validé — `docker compose up -d` : les deux conteneurs passent `healthy` et acceptent une connexion **authentifiée** (MySQL 8.4.9 en `riku@%`, MongoDB 8.0.26 sur la base `riku`). Réalisé par le `docker-compose.yml` de la tâche 2.1.
+      _Note :_ les services **MySQL80 et MongoDB natifs** de Windows ont été arrêtés et passés en démarrage `Disabled`. Les conteneurs occupent donc les ports standards **3306 / 27017** — une seule source de vérité, reproductible par un simple `docker compose up`.
+- [x] **0.4 — Initialiser le dépôt Git + structure monorepo** · `kit: monorepo.md`, `git-workflow.md` · ✔ Validé — commit `4a3a0ac` : `git init`, `.gitignore`, `pnpm-workspace.yaml` (`apps/*`, `packages/*`), scripts racine (`verify`/`typecheck`/`lint`/`test`), `packages/shared` vide. _(`apps/api` + `apps/web` viendront en 2.2/2.3.)_
+- [x] **0.5 — Appliquer le kit** (config.yaml + tooling eslint/prettier/tsconfig/hadolint) · `kit: AGENTS.kit.md` · ✔ Validé — commit `e608b08` : `eslint.config.mjs`, `.prettierrc`, `.prettierignore`, `tsconfig.base.json`, `.hadolint.yaml` à la racine + `openspec/config.yaml` renseigné (`context` + `rules` par artefact).
 
 ---
 
@@ -60,7 +63,8 @@ _(CDA : « Installer et configurer son environnement de travail »)_
 
 ## Phase 2 — Socle technique
 
-- [ ] **2.1 — `docker-compose` local** (api, web, mysql, mongo) · `kit: docker.md` · ✔ Validé si : `docker compose up` démarre toute la stack.
+- [x] **2.1 — `docker-compose` local** (mysql, mongo) · `kit: docker.md`, `configuration.md` · ✔ Validé — `docker-compose.yml` : tags épinglés `mysql:8.4` / `mongo:8.0` (`docker.r2`), volumes nommés, `healthcheck` sur chaque service, ports liés à `127.0.0.1`, credentials injectés depuis `.env` + `.env.example` versionné (`configuration.r4`).
+      _Choix :_ `api` et `web` ne sont **pas** conteneurisés en dev (perte du hot-reload sans contrepartie) ; leurs images arrivent en 6.1.
 - [ ] **2.2 — Squelette backend NestJS en couches** · `kit: nest.md`, `clean-archi-back.md` · ✔ Validé si : modules vides mais démarrables, découpage domaine/application/infra respecté.
 - [ ] **2.3 — Squelette frontend React** · `kit: react.md`, `clean-archi-front.md` · ✔ Validé si : app démarre, routing en place, structure de dossiers conforme.
 - [ ] **2.4 — Config & secrets** (`.env`, validation de config, `.env.example`) · `kit: configuration.md` · ✔ Validé si : config typée et validée au boot, aucun secret en dur.

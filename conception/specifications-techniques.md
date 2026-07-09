@@ -1,4 +1,4 @@
-# Spécifications techniques — QuizDev *(titre de travail)*
+# Spécifications techniques — Riku
 
 > Livrable de conception (tâche 1.10). Décrit **l'architecture logicielle**, la **stack**, la **stratégie de sécurité**
 > et l'**éco-conception**. S'appuie sur `kit/rules/architecture/clean-archi-back.md`, `nest.md`, `react.md`,
@@ -97,7 +97,7 @@ dépend d'aucun framework ; l'**infrastructure** implémente les ports définis 
 
 ## 6. Stratégie de sécurité (mappée OWASP Top 10:2025 — `kit security.md`)
 
-| Risque OWASP | Mesure dans QuizDev | Règle kit |
+| Risque OWASP | Mesure dans Riku | Règle kit |
 | --- | --- | --- |
 | **A01** Broken Access Control | Guards **deny-by-default** ; `RolesGuard` (admin vs student) ; **vérification de propriété** (un apprenant n'accède qu'à ses données) | `security.r1` |
 | **A02** Misconfiguration | `helmet` (en-têtes de sécurité) ; config validée au boot ; **aucun secret en dur** (`.env`) | `security.r2`, `configuration.md` |

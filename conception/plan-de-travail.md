@@ -1,142 +1,169 @@
 # Plan de travail — Riku
 
 > **Tableau de bord du projet CDA.** Une tâche = une action atomique, cochable, avec un critère de validation.
-> Tu coches au fur et à mesure ; tu peux demander à Claude de **valider une étape** ou de **vérifier ton code**.
+> Les tâches sont dans l'**ordre où il faut les faire**. Tu coches au fur et à mesure.
 
 ## Comment s'en servir
 
-- **Faire une tâche** → tu la réalises, tu remplaces `- [ ]` par `- [x]`.
-- **Faire valider une étape** → « _Claude, valide la tâche 1.2 : voici mon MCD_ » → il contrôle contre le « ✔ Validé si ».
-- **Faire vérifier ton code** → « _Claude, vérifie mon diff contre les règles du kit_ » (cf. `kit/AGENTS.kit.md` §5).
-- **Légende :** `↗` = extension hors-MVP (à faire seulement si le temps le permet) · `kit:` = règle du kit qui gouverne la tâche.
+- **Légende de propriété :**
+  - 👤 **Toi** — tu écris le code. C'est le cas par défaut : le projet est un exercice d'apprentissage.
+  - 🤖 **Claude** — amorçage et outillage seulement (scaffolding, configs, CI). Il ne code pas de métier.
+  - 🔍 **Revue** — chaque tâche 👤 se termine par une revue : tu lances `pnpm verify`, **puis** tu demandes
+    « _Claude, vérifie cette tâche_ ». Il confronte ton code aux règles du kit (`kit/AGENTS.kit.md` §5)
+    et ne relève que les règles `Vérifié par: manuel`.
+- **Dépendances :** tu n'installes une dépendance qu'au moment où la tâche qui l'utilise arrive.
+  Pas d'installation « au cas où ».
+- **Autres marqueurs :** `↗` = hors-MVP (seulement si le temps le permet) · `kit:` = règle du kit qui gouverne la tâche.
 
-## Ordre conseillé & lignes de force
+## Lignes de force
 
-Tu suis les phases dans l'ordre. Ce qui est **noté par le jury** avant tout : le **composant métier** (répétition espacée, phase 3),
-l'**accès SQL + NoSQL** (phase 3), la **sécurité** (transverse) et les **tests** (phase 5). Vise le MVP de bout en bout **avant** les `↗`.
-
----
-
-## Vue d'ensemble (progression par phase)
-
-- [x] **Phase 0** — Cadrage & environnement de travail
-- [ ] **Phase 1** — Conception _(reste 1.9, 1.11)_
-- [ ] **Phase 2** — Socle technique (squelettes + infra locale) _(tu es ici)_
-- [ ] **Phase 3** — Implémentation backend
-- [ ] **Phase 4** — Implémentation frontend
-- [ ] **Phase 5** — Tests & qualité
-- [ ] **Phase 6** — Déploiement & DevOps
-- [ ] **Phase 7** — Dossier & soutenance
+Ce que le jury note avant tout : le **composant métier** (répétition espacée, §5), l'**accès SQL + NoSQL** (§5),
+la **sécurité** (transverse) et les **tests** (§7). Vise le MVP de bout en bout **avant** les `↗`.
 
 ---
 
-## Phase 0 — Cadrage & environnement de travail
+## Vue d'ensemble
 
-_(CDA : « Installer et configurer son environnement de travail »)_
-
-- [x] **0.1 — Figer le périmètre MVP** · ✔ Validé — `conception/cas-utilisation.md` §1 (périmètre + hors-scope).
-- [x] **0.2 — Installer la boîte à outils** · ✔ Validé — Node **v26.4.0** · npm 11.14.1 · pnpm 10.0.0 · git 2.47.0 · Docker 29.5.2 + Compose v5.1.4 · Nest CLI 11.0.21.
-      _Note :_ Node 26 est une version _Current_, pas la LTS. Choix assumé et documenté — `specifications-techniques.md` §2, écart **(G)** à `docker.r2`.
-- [x] **0.3 — Installer MySQL + MongoDB en local** (via Docker) · ✔ Validé — `docker compose up -d` : les deux conteneurs passent `healthy` et acceptent une connexion **authentifiée** (MySQL 8.4.9 en `riku@%`, MongoDB 8.0.26 sur la base `riku`). Réalisé par le `docker-compose.yml` de la tâche 2.1.
-      _Note :_ les services **MySQL80 et MongoDB natifs** de Windows ont été arrêtés et passés en démarrage `Disabled`. Les conteneurs occupent donc les ports standards **3306 / 27017** — une seule source de vérité, reproductible par un simple `docker compose up`.
-- [x] **0.4 — Initialiser le dépôt Git + structure monorepo** · `kit: monorepo.md`, `git-workflow.md` · ✔ Validé — commit `4a3a0ac` : `git init`, `.gitignore`, `pnpm-workspace.yaml` (`apps/*`, `packages/*`), scripts racine (`verify`/`typecheck`/`lint`/`test`), `packages/shared` vide. _(`apps/api` + `apps/web` viendront en 2.2/2.3.)_
-- [x] **0.5 — Appliquer le kit** (config.yaml + tooling eslint/prettier/tsconfig/hadolint) · `kit: AGENTS.kit.md` · ✔ Validé — commit `e608b08` : `eslint.config.mjs`, `.prettierrc`, `.prettierignore`, `tsconfig.base.json`, `.hadolint.yaml` à la racine + `openspec/config.yaml` renseigné (`context` + `rules` par artefact).
-
----
-
-## Phase 1 — Conception
-
-- [x] **1.1 — Cas d'utilisation** (acteurs, CU, mésusages, RG) · `conception/cas-utilisation.md` · ✔ _fait_.
-- [x] **1.2 — MCD (Merise)** · `kit: mcd.md` · ✔ Validé — `conception/mcd.drawio` (identifiants, cardinalités, association `PRACTICE` porteuse d'attributs, contraintes d'intégrité).
-- [x] **1.3 — MLD (schéma relationnel)** · `kit: mld.md` · ✔ Validé — `conception/mld.drawio` (FK + table de jointure `Practice`).
-- [x] **1.4 — MPD** · `kit: mpd.md` · ✔ Validé — `conception/mpd.drawio` (types, `UNIQUE`, `NULL`/`NOT NULL`, `ON DELETE`). Le **script de création** sera produit par une **migration TypeORM** (`migration:generate`) en phase d'implémentation — pas de `schema.sql` manuel, pas de `synchronize`.
-- [x] **1.5 — Modèle documentaire MongoDB** · ✔ Validé — `conception/modele-donnees.md` §4 (structure du document `sessions`, réponses imbriquées, justification du choix documentaire).
-- [x] **1.6 — Diagramme de classes (UML)** · ✔ Validé si : entités du domaine + services métier (dont le service de répétition espacée), attributs/méthodes et relations cohérents avec le MCD.
-- [x] **1.7 — Diagramme de séquence — UC10 (session de révision)** _(CU pivot)_ · ✔ Validé si : flux front→API→métier→MySQL/Mongo complet, y compris la sélection des cartes dues et le recalcul d'échéance.
-- [x] **1.8 — Diagramme(s) de séquence — UC01 & UC11** · ✔ Validé — `diagramme-sequence-inscription.drawio` (Argon2id + anti-énumération) et `diagramme-sequence.drawio` (correction côté serveur).
-- [ ] **1.9 — Maquettes + enchaînement** (wireframes des écrans clés) · ✔ Validé si : écrans connexion, thèmes, session, bilan, progression, admin ; schéma d'enchaînement fourni.
-- [x] **1.10 — Spécifications techniques** · `kit: clean-archi-back.md`, `security.md` · ✔ Validé — `conception/specifications-techniques.md` (stack complète, archi en couches + rôles, stratégie sécurité mappée OWASP, éco-conception).
-- [ ] **1.11 — Plan de tests (définition)** · `kit: _strategy.md` · ✔ Validé si : ce qui est testé (unitaire/intégration/e2e/sécurité) et la fonctionnalité représentative (UC10) sont désignés.
+- [x] **1. Cadrage & environnement** _(CDA : « installer et configurer son environnement de travail »)_
+- [ ] **2. Conception** _(reste les maquettes et le plan de tests)_
+- [ ] **3. Socle technique** _(tu es ici)_
+- [ ] **4. Fondations backend** (config, bases, sécurité transverse)
+- [ ] **5. Métier backend** (auth, catalogue, répétition espacée, sessions)
+- [ ] **6. Frontend**
+- [ ] **7. Tests & qualité**
+- [ ] **8. Déploiement & DevOps**
+- [ ] **9. Dossier & soutenance**
 
 ---
 
-## Phase 2 — Socle technique
+## 1. Cadrage & environnement de travail ✅
 
-- [x] **2.1 — `docker-compose` local** (mysql, mongo) · `kit: docker.md`, `configuration.md` · ✔ Validé — `docker-compose.yml` : tags épinglés `mysql:8.4` / `mongo:8.0` (`docker.r2`), volumes nommés, `healthcheck` sur chaque service, ports liés à `127.0.0.1`, credentials injectés depuis `.env` + `.env.example` versionné (`configuration.r4`).
-      _Choix :_ `api` et `web` ne sont **pas** conteneurisés en dev (perte du hot-reload sans contrepartie) ; leurs images arrivent en 6.1.
-- [ ] **2.2 — Squelette backend NestJS en couches** · `kit: nest.md`, `clean-archi-back.md` · ✔ Validé si : modules vides mais démarrables, découpage domaine/application/infra respecté.
-- [ ] **2.3 — Squelette frontend React** · `kit: react.md`, `clean-archi-front.md` · ✔ Validé si : app démarre, routing en place, structure de dossiers conforme.
-- [ ] **2.4 — Config & secrets** (`.env`, validation de config, `.env.example`) · `kit: configuration.md` · ✔ Validé si : config typée et validée au boot, aucun secret en dur.
-- [ ] **2.5 — CI minimale** (lint + test au push) · `kit: ci-cd.md` · ✔ Validé si : pipeline vert sur un commit de base.
-
----
-
-## Phase 3 — Implémentation backend _(par module)_
-
-- [ ] **3.1 — Module Auth : inscription** (DTO + validation, hachage Argon2id, anti-énumération) · `kit: validation.md`, `security.md` · ✔ Validé si : compte créé, mot de passe haché salé, tests verts.
-- [ ] **3.2 — Module Auth : connexion + JWT + rôles** (guards, rate-limit login) · `kit: security.md` · ✔ Validé si : login renvoie un JWT valide, routes protégées, tentatives limitées.
-- [ ] **3.3 — Guards de rôle & propriété** (deny-by-default, ownership) · `kit: security.md` (r1) · ✔ Validé si : un apprenant ne peut ni agir en admin (MUC04) ni lire les données d'autrui (MUC03) — tests d'accès verts.
-- [ ] **3.4 — Module Catalogue : thèmes (CRUD admin)** · `kit: api-design.md`, `data-access.md` · ✔ Validé si : CRUD complet réservé à l'admin, entrées validées, tests verts.
-- [ ] **3.5 — Module Questions/Réponses (CRUD admin)** · ✔ Validé si : QCM avec 2..N réponses dont ≥1 correcte ; contrainte « au moins une bonne réponse » vérifiée ; tests verts.
-- [ ] **3.6 — Composant métier : répétition espacée** (fonctions pures RG-01→07) · **cœur noté** · `kit: jest.md` · ✔ Validé si : `appliquerResultat()` et `selectionnerCartesDues()` sont des fonctions pures, **couvertes par tests unitaires** (dont le jeu d'essai `boîte2+faux → boîte1`).
-- [ ] **3.7 — Accès données SQL** (repository `cartes`, requêtes paramétrées) · `kit: data-access.md`, `security.md` (r5) · ✔ Validé si : lecture/écriture des cartes, aucune concaténation dans les requêtes, tests d'intégration verts.
-- [ ] **3.8 — Accès données NoSQL** (journal `sessions` + `reponses_donnees` dans Mongo) · **exigence SQL+NoSQL** · ✔ Validé si : session et réponses persistées en documents, relues pour la progression, tests d'intégration verts.
-- [ ] **3.9 — Endpoints session de révision** (UC10/11/12 : démarrer, répondre, bilan) · ✔ Validé si : correction **côté serveur** (MUC01), bonne réponse jamais renvoyée avant validation ; tests verts.
-- [ ] **3.10 — Endpoint progression** (UC13, agrégation par thème/boîte) · ✔ Validé si : répartition des cartes par boîte renvoyée pour l'utilisateur courant.
-- [ ] **3.11 — Sécurité transverse** (headers, handler d'erreur global fail-closed, pas de fuite de stack) · `kit: security.md` (r2,r10), `error-handling.md` · ✔ Validé si : erreurs génériques au client (MUC07), en-têtes de sécurité présents.
-- [ ] **3.12 — Journalisation des événements de sécurité** (login/accès, succès+échec) · `kit: security.md` (r9), `observability.md` · ✔ Validé si : événements loggés avec contexte, sans secret/PII.
+- [x] **1.1 🤖 Figer le périmètre MVP** · ✔ `conception/cas-utilisation.md` §1 (périmètre + hors-scope).
+- [x] **1.2 👤 Installer la boîte à outils** · ✔ Node **v26.4.0** · npm 11.14.1 · pnpm 10.0.0 · git 2.47.0 · Docker 29.5.2 + Compose v5.1.4 · Nest CLI 11.0.21.
+      _Note :_ Node 26 est une version _Current_, pas la LTS. Choix assumé — `specifications-techniques.md` §2, écart **(G)** à `docker.r2`.
+- [x] **1.3 🤖 Bases MySQL + MongoDB en local** (via Docker) · ✔ Les deux conteneurs passent `healthy` et acceptent une connexion **authentifiée** (MySQL 8.4.9 en `riku@%`, MongoDB 8.0.26 sur la base `riku`).
+      _Note :_ les services **MySQL80 et MongoDB natifs** de Windows ont été arrêtés et passés en `Disabled`. Les conteneurs occupent les ports standards **3306 / 27017**.
+- [x] **1.4 🤖 Dépôt Git + monorepo pnpm** · `kit: monorepo.md`, `git-workflow.md` · ✔ commit `4a3a0ac`.
+- [x] **1.5 🤖 Appliquer le kit** (tooling eslint/prettier/tsconfig/hadolint + `openspec/config.yaml`) · `kit: AGENTS.kit.md` · ✔ commit `e608b08`.
 
 ---
 
-## Phase 4 — Implémentation frontend _(par écran)_
+## 2. Conception
 
-- [ ] **4.1 — Layout + navigation + routes protégées** · `kit: react.md`, `state-management.md` · ✔ Validé si : redirection si non connecté, menu selon rôle.
-- [ ] **4.2 — Écrans Auth** (inscription, connexion) · `kit: data-fetching.md`, `accessibility.md` · ✔ Validé si : formulaires validés, messages neutres (anti-énumération), conformes aux maquettes.
-- [ ] **4.3 — Écran « Parcourir les thèmes »** (UC30) · ✔ Validé si : liste des thèmes + nb de questions, lancement d'une session.
-- [ ] **4.4 — Écran « Session de révision »** (UC10/11 : question → feedback) · **écran pivot** · ✔ Validé si : QCM interactif, verdict après validation, enchaînement des questions.
-- [ ] **4.5 — Écran « Bilan de session »** (UC12) · ✔ Validé si : score, cartes revues, ce qui reste à réviser.
-- [ ] **4.6 — Écran « Progression »** (UC13) · ✔ Validé si : visualisation de la maîtrise par thème (boîtes).
-- [ ] **4.7 — Écrans Admin** (thèmes, questions/réponses) · ✔ Validé si : CRUD complet réservé à l'admin, cohérent avec le back.
-- [ ] **4.8 — Responsive + charte graphique + accessibilité** · `kit: accessibility.md`, `performance-frontend.md` · ✔ Validé si : s'adapte aux tailles d'écran, contrastes/labels corrects.
-
----
-
-## Phase 5 — Tests & qualité
-
-_(CDA : « Préparer et exécuter les plans de tests »)_
-
-- [ ] **5.1 — Tests unitaires du composant métier** + jeu d'essai documenté · `kit: jest.md` · ✔ Validé si : RG-01→07 couvertes, jeu d'essai (entrée/attendu/obtenu) rédigé pour le dossier.
-- [ ] **5.2 — Tests d'intégration** (endpoints + accès SQL & NoSQL) · ✔ Validé si : parcours session complet testé de l'API à la base.
-- [ ] **5.3 — Tests e2e du parcours pivot** (connexion → réviser → bilan) · `kit: cypress.md` · ✔ Validé si : scénario e2e vert.
-- [ ] **5.4 — Tests de sécurité (misuse cases)** MUC01→07 · `kit: security.md` · ✔ Validé si : au moins triche/IDOR/élévation de privilège couverts par des tests qui échouent côté attaquant.
-- [ ] **5.5 — Rapport de couverture** · ✔ Validé si : couverture générée, points faibles identifiés.
+- [x] **2.1 👤 Cas d'utilisation** (acteurs, CU, mésusages, RG-01→07) · ✔ `conception/cas-utilisation.md`.
+- [x] **2.2 👤 MCD (Merise)** · `kit: mcd.md` · ✔ `conception/mcd.drawio`.
+- [x] **2.3 👤 MLD (schéma relationnel)** · `kit: mld.md` · ✔ `conception/mld.drawio`.
+- [x] **2.4 👤 MPD** · `kit: mpd.md` · ✔ `conception/mpd.drawio`. Le script de création sera produit par une **migration TypeORM**, jamais à la main, jamais `synchronize`.
+- [x] **2.5 👤 Modèle documentaire MongoDB** · ✔ `conception/modele-donnees.md` §4.
+- [x] **2.6 👤 Diagramme de classes (UML)** · ✔ `conception/diagramme-classes.drawio`.
+- [x] **2.7 👤 Diagramme de séquence — UC10** _(CU pivot)_ · ✔ `conception/diagramme-sequence.drawio`.
+- [x] **2.8 👤 Diagrammes de séquence — UC01 & UC11** · ✔ Argon2id + anti-énumération, correction côté serveur.
+- [x] **2.9 👤 Spécifications techniques** · `kit: clean-archi-back.md`, `security.md` · ✔ `conception/specifications-techniques.md`.
+- [ ] **2.10 👤 Plan de tests (définition)** · `kit: _strategy.md` · ✔ Validé si : ce qui est testé (unitaire / intégration / e2e / sécurité) et la fonctionnalité représentative (UC10) sont désignés.
+      _À faire avant d'écrire le premier test (§7). Peut se faire dès maintenant._
+- [ ] **2.11 👤 Maquettes + enchaînement des écrans** · ✔ Validé si : connexion, thèmes, session, bilan, progression, admin ; schéma d'enchaînement fourni.
+      _Bloquant pour le §6 (frontend), pas avant._
 
 ---
 
-## Phase 6 — Déploiement & DevOps
+## 3. Socle technique
 
-_(CDA : « Préparer le déploiement » + « Mise en production DevOps »)_
-
-- [ ] **6.1 — Dockerfiles durcis** (api + web) · `kit: docker.md` · ✔ Validé si : `hadolint` passe, images multi-stage, non-root.
-- [ ] **6.2 — Pipeline CI complet** (lint + test + build + SCA/SBOM) · `kit: ci-cd.md`, `security.md` (r3) · ✔ Validé si : toutes les étapes vertes, SBOM généré.
-- [ ] **6.3 — Procédure de déploiement documentée** · ✔ Validé si : étapes de déploiement + rollback écrites (pour l'entretien technique).
-- [ ] **6.4 — Déploiement sur l'environnement cible** ↗ · ✔ Validé si : appli accessible en ligne (bonus, non exigé).
+- [x] **3.1 🤖 `docker-compose` local** (mysql, mongo) · `kit: docker.md`, `configuration.md` · ✔ Tags épinglés `mysql:8.4` / `mongo:8.0` (`docker.r2`), volumes nommés, `healthcheck` par service, ports liés à `127.0.0.1`, credentials depuis `.env` + `.env.example` versionné (`configuration.r4`).
+      _Choix :_ `api` et `web` ne sont pas conteneurisés en dev (perte du hot-reload sans contrepartie) ; leurs images arrivent en §8.
+- [x] **3.2 🤖 Amorçage `apps/api` (NestJS) et `apps/web` (React + Vite)** · ✔ Les deux démarrent, `pnpm verify` est vert.
+      Livré : `@riku/api` (`main.ts` + `AppModule` vide, Jest) · `@riku/web` (`App.tsx` minimal, Vitest + Testing Library) ·
+      configs générées supprimées au profit de celles de la racine (une seule source de vérité pour ESLint et Prettier) ·
+      couche ESLint React (`react-hooks`, `jsx-a11y`) · catalogue pnpm sur **TypeScript 6.0**.
+      **Aucune dépendance métier installée**, aucun module créé : c'est ton travail, à partir de 3.3.
+- [ ] **3.3 🤖 CI minimale** (GitHub Actions : install + `pnpm verify` au push/PR) · `kit: ci-cd.md` · ✔ Validé si : pipeline vert sur un commit de base.
 
 ---
 
-## Phase 7 — Dossier & soutenance (CDA)
+## 4. Fondations backend
 
-- [ ] **7.1 — Rédiger le dossier de projet** (plan « formation », 40–60 p.) · ✔ Validé si : suit le plan du référentiel (besoins, archi, MCD/MPD, maquettes, code, sécurité, tests, veille).
-- [ ] **7.2 — Sélectionner les extraits de code significatifs** (UI, métier, accès données) · ✔ Validé si : extraits commentés avec justification des choix.
-- [ ] **7.3 — Jeu d'essai de la fonctionnalité représentative (UC10)** · ✔ Validé si : données en entrée / attendues / obtenues + analyse des écarts.
-- [ ] **7.4 — Veille sécurité** (vulnérabilités trouvées / corrigées) · ✔ Validé si : démarche de veille décrite + exemples concrets.
-- [ ] **7.5 — Support de présentation (diaporama)** · ✔ Validé si : suit le plan de présentation du référentiel.
-- [ ] **7.6 — Répétition orale** (timing ~40 min présentation) · ✔ Validé si : blanc chronométré réalisé au moins une fois.
+> Tout est 👤 à partir d'ici. Ordre important : la config avant les bases, les bases avant le métier.
+
+- [ ] **4.1 👤 Config typée & validée au boot** (`@nestjs/config`, schéma de validation, `.env.example` complété avec `JWT_SECRET`, `NODE_ENV`…) · `kit: configuration.md` (r1, r3, r5) · ✔ Validé si : l'API **refuse de démarrer** si une variable requise manque ; aucun `process.env` lu hors du module de config.
+      _`main.ts` lit encore `process.env.PORT` en direct : cette tâche doit le supprimer._
+- [ ] **4.2 👤 Structure en couches des modules** (dossiers `domain` / `application` / `infrastructure` pour `auth`, `users`, `catalog`, `revision`) · `kit: clean-archi-back.md`, `nest.md` · ✔ Validé si : modules déclarés et démarrables, `AppModule` les importe, aucun import d'une couche externe vers l'intérieur (`clean-archi-back.r1`).
+- [ ] **4.3 👤 Connexion MySQL via TypeORM** (`DataSource`, migrations configurées, **jamais `synchronize`**) · `kit: data-access.md` · ✔ Validé si : l'API démarre et se connecte au conteneur MySQL ; `migration:generate` est opérationnel.
+      _Rappel :_ une classe annotée `@Entity()` est un **modèle de persistance**, pas une entité de domaine (`clean-archi-back.r2`).
+- [ ] **4.4 👤 Connexion MongoDB via Mongoose** (`@nestjs/mongoose`) · ✔ Validé si : l'API démarre et se connecte au conteneur Mongo ; schéma de session déclaré.
+- [ ] **4.5 👤 Sécurité transverse** (`helmet`, `cookie-parser`, `ValidationPipe` global, filtre d'exceptions global fail-closed) · `kit: security.md` (r2, r10), `error-handling.md`, `validation.md` · ✔ Validé si : erreurs génériques au client (MUC07), aucune fuite de stack, en-têtes de sécurité présents.
+- [ ] **4.6 👤 Journalisation des événements de sécurité** · `kit: security.md` (r9), `observability.md` · ✔ Validé si : événements loggés avec contexte, **sans secret ni PII**.
+
+---
+
+## 5. Métier backend
+
+- [ ] **5.1 👤 Auth — inscription** (DTO + validation, hachage **Argon2id**, anti-énumération) · `kit: validation.md`, `password-hashing.md` · ✔ Validé si : compte créé, mot de passe haché et salé, jamais renvoyé ; tests verts.
+- [ ] **5.2 👤 Auth — connexion + JWT en cookie httpOnly** (Passport, rate-limit login) · `kit: authentication.md`, `passport.md`, `security.md` (r7) · ✔ Validé si : cookie `httpOnly`+`secure`+`sameSite`, routes protégées, tentatives limitées.
+- [ ] **5.3 👤 Guards de rôle & de propriété** (deny-by-default, ownership) · `kit: authorization.md`, `nest-authz.md` (r1, r2) · ✔ Validé si : un apprenant ne peut ni agir en admin (MUC04) ni lire les données d'autrui (MUC03) — tests d'accès verts.
+- [ ] **5.4 👤 Catalogue — thèmes (CRUD admin)** · `kit: api-design.md`, `data-access.md` · ✔ Validé si : CRUD réservé à l'admin, entrées validées, entités jamais exposées (DTO de réponse) ; tests verts.
+- [ ] **5.5 👤 Catalogue — questions & réponses (CRUD admin)** · ✔ Validé si : QCM à 2..N réponses dont ≥1 correcte ; la contrainte « au moins une bonne réponse » est vérifiée ; tests verts.
+- [ ] **5.6 👤 Composant métier — répétition espacée** (fonctions pures, RG-01→07) · **cœur noté** · `kit: clean-archi-back.md` (r2, r9), `jest.md` · ✔ Validé si : `nextState()` et `intervalForBox()` sont **pures** (aucune I/O, aucun framework) et couvertes par des tests unitaires, dont le jeu d'essai `boîte 2 + réponse fausse → boîte 1`.
+- [ ] **5.7 👤 Accès données SQL** (repository `cartes`, requêtes paramétrées) · `kit: data-access.md`, `security.md` (r5) · ✔ Validé si : lecture/écriture des cartes, aucune concaténation dans les requêtes, mapping persistance→domaine explicite ; tests d'intégration verts.
+- [ ] **5.8 👤 Accès données NoSQL** (journal `sessions` + réponses données) · **exigence SQL+NoSQL** · ✔ Validé si : session et réponses persistées en documents, relues pour la progression ; pas de `$where` dynamique ; tests d'intégration verts.
+- [ ] **5.9 👤 Endpoints session de révision** (UC10/11/12 : démarrer, répondre, bilan) · ✔ Validé si : correction **côté serveur** (MUC01), la bonne réponse n'est **jamais** envoyée au front avant soumission ; tests verts.
+- [ ] **5.10 👤 Endpoint progression** (UC13, agrégation par thème/boîte) · ✔ Validé si : répartition des cartes par boîte renvoyée **pour l'utilisateur courant uniquement**.
+
+---
+
+## 6. Frontend
+
+> Prérequis : la tâche **2.11** (maquettes) doit être faite.
+
+- [ ] **6.1 👤 Socle front** (React Router, TanStack Query + `QueryClientProvider`, Zustand, Tailwind + shadcn/ui) · `kit: react.md`, `state-management.md` · ✔ Validé si : l'app démarre, le routing fonctionne, un composant shadcn s'affiche.
+- [ ] **6.2 👤 Layout + navigation + routes protégées** · ✔ Validé si : redirection si non connecté, menu selon rôle.
+      _Rappel :_ une garde de route côté front est **du confort UX**, jamais une mesure de sécurité.
+- [ ] **6.3 👤 Écrans Auth** (inscription, connexion) · `kit: data-fetching.md`, `accessibility.md` · ✔ Validé si : formulaires validés (React Hook Form + Zod), messages neutres (anti-énumération).
+- [ ] **6.4 👤 Écran « Parcourir les thèmes »** (UC30) · ✔ Validé si : liste des thèmes + nombre de questions, lancement d'une session.
+- [ ] **6.5 👤 Écran « Session de révision »** (UC10/11) · **écran pivot** · ✔ Validé si : QCM interactif, verdict après validation, enchaînement des questions.
+- [ ] **6.6 👤 Écran « Bilan de session »** (UC12) · ✔ Validé si : score, cartes revues, ce qui reste à réviser.
+- [ ] **6.7 👤 Écran « Progression »** (UC13) · ✔ Validé si : visualisation de la maîtrise par thème (boîtes).
+- [ ] **6.8 👤 Écrans Admin** (thèmes, questions/réponses) · ✔ Validé si : CRUD complet réservé à l'admin, cohérent avec le back.
+- [ ] **6.9 👤 Responsive + charte graphique + accessibilité** · `kit: accessibility.md`, `performance-frontend.md` · ✔ Validé si : s'adapte aux tailles d'écran, contrastes et labels corrects.
+
+---
+
+## 7. Tests & qualité
+
+_(CDA : « préparer et exécuter les plans de tests »)_
+
+- [ ] **7.1 👤 Tests unitaires du composant métier** + jeu d'essai documenté · `kit: jest.md` · ✔ Validé si : RG-01→07 couvertes, jeu d'essai (entrée / attendu / obtenu) rédigé pour le dossier.
+- [ ] **7.2 👤 Tests d'intégration** (endpoints + accès SQL & NoSQL) · ✔ Validé si : le parcours de session complet est testé de l'API à la base.
+- [ ] **7.3 👤 Tests e2e du parcours pivot** (connexion → réviser → bilan) · `kit: cypress.md` · ✔ Validé si : scénario e2e vert.
+- [ ] **7.4 👤 Tests de sécurité (cas de mésusage)** MUC01→07 · `kit: security.md` · ✔ Validé si : triche, IDOR et élévation de privilège sont couverts par des tests qui **échouent côté attaquant**.
+- [ ] **7.5 👤 Rapport de couverture** · ✔ Validé si : couverture générée, points faibles identifiés.
+
+---
+
+## 8. Déploiement & DevOps
+
+_(CDA : « préparer le déploiement » + « mise en production DevOps »)_
+
+- [ ] **8.1 👤 Dockerfiles durcis** (api + web) · `kit: docker.md` · ✔ Validé si : `hadolint` passe, images multi-stage, utilisateur non-root.
+      _Rappel de l'écart **(G)** :_ image de base `node:26-alpine`, pas la LTS. Se referme le 28 octobre 2026.
+- [ ] **8.2 👤 Pipeline CI complet** (lint + test + build + SCA/SBOM) · `kit: ci-cd.md`, `security.md` (r3) · ✔ Validé si : toutes les étapes vertes, SBOM généré.
+- [ ] **8.3 👤 Procédure de déploiement documentée** · ✔ Validé si : étapes de déploiement + rollback écrites (pour l'entretien technique).
+- [ ] **8.4 👤 Déploiement sur l'environnement cible** ↗ · ✔ Validé si : appli accessible en ligne (bonus, non exigé).
+
+---
+
+## 9. Dossier & soutenance (CDA)
+
+- [ ] **9.1 👤 Rédiger le dossier de projet** (plan « formation », 40–60 p.) · ✔ Validé si : suit le plan du référentiel (besoins, archi, MCD/MPD, maquettes, code, sécurité, tests, veille).
+- [ ] **9.2 👤 Sélectionner les extraits de code significatifs** (UI, métier, accès données) · ✔ Validé si : extraits commentés avec justification des choix.
+- [ ] **9.3 👤 Jeu d'essai de la fonctionnalité représentative (UC10)** · ✔ Validé si : données en entrée / attendues / obtenues + analyse des écarts.
+- [ ] **9.4 👤 Veille sécurité** (vulnérabilités trouvées / corrigées) · ✔ Validé si : démarche de veille décrite + exemples concrets.
+- [ ] **9.5 👤 Support de présentation (diaporama)** · ✔ Validé si : suit le plan de présentation du référentiel.
+- [ ] **9.6 👤 Répétition orale** (timing ~40 min de présentation) · ✔ Validé si : blanc chronométré réalisé au moins une fois.
 
 ---
 
 ## Notes
 
-- Ce plan couvre **tout le cycle**, mais tu peux te concentrer sur la **Phase 1** pour l'instant.
 - Les `↗` sont optionnels : ne les fais que si tu es en avance sur ton budget (~40 h de dev, échéance début septembre).
-- À chaque fin de phase : demande à Claude « _valide la phase N_ » — il repasse les « ✔ Validé si » un par un.
+- **Protocole après chaque tâche 👤 :** `pnpm verify` d'abord, puis « _Claude, vérifie_ ». Sans `pnpm verify`,
+  la revue perd son temps sur des points que la machine relève gratuitement (format, complexité, types).
+- **Prochaine action :** 3.3 (CI minimale, 🤖) — ou directement 4.1 si tu veux commencer à coder tout de suite.

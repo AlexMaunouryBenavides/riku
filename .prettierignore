@@ -1,0 +1,19 @@
+# Prettier ne formate QUE notre code. On exclut :
+# - les dépendances et sorties de build
+node_modules/
+dist/
+build/
+coverage/
+# - le lockfile (géré par pnpm)
+pnpm-lock.yaml
+# - la bibliothèque de règles et la conception (sources de vérité, mise en forme propre)
+kit/
+conception/
+docs/
+openspec/
+.claude/
+# - fichiers binaires / diagrammes
+*.drawio
+*.pdf
+# - fichiers d'instructions (docs, pas du code)
+CLAUDE.md

@@ -1,20 +1,55 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+# ─────────────────────────────────────────────────────────────────────────────
+# Contexte projet — injecté à l'IA lors de la création d'artefacts OpenSpec.
+# (point d'extension natif ; cf. kit/AGENTS.kit.md §4)
+# ─────────────────────────────────────────────────────────────────────────────
+context: |
+  Projet : QuizDev — application web de révision par répétition espacée (titre CDA).
+  Monorepo pnpm : apps/api (NestJS), apps/web (React + Vite), packages/shared (types & enums).
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  Stack figée (cf. conception/specifications-techniques.md) :
+  - Backend  : NestJS · TypeORM → MySQL · Mongoose → MongoDB · JWT httpOnly + Passport (passport-jwt) ·
+               Argon2id · class-validator/class-transformer · @nestjs/throttler · @nestjs/config · helmet.
+  - Frontend : React + Vite · Tailwind + shadcn/ui · React Router · TanStack Query (état serveur) ·
+               Zustand (état client) · React Hook Form + Zod.
+  - Tests    : Jest + Supertest (back) · Vitest + RTL (front) · Cypress (e2e).
+  - Qualité  : ESLint + Prettier · GitHub Actions · Docker + docker-compose.
+
+  Contraintes non négociables :
+  - Ne jamais faire confiance au client : toute entrée est validée côté serveur (DTO + ValidationPipe).
+  - Correction d'une réponse côté serveur ; la bonne réponse n'est jamais envoyée au front avant
+    soumission (anti-triche, MUC01).
+  - Entités jamais exposées : DTO de réponse + mapping ; jamais de hashed_password renvoyé.
+  - Répétition espacée = domaine pur (fonctions sans I/O ni framework), testée unitairement (RG-01→07).
+  - Migrations TypeORM, jamais synchronize:true. IDs relationnels INT auto-incrémentés (conforme au MPD).
+  - Aucun secret en dur : .env + .env.example ; config typée validée au boot.
+  - Sécurité mappée OWASP Top 10:2025 (specifications-techniques.md §6). Éco-conception : cf. §7.
+
+  Couche 1 (enforcement gratuit, hors revue LLM) : Prettier (.prettierrc), ESLint (eslint.config.mjs),
+  tsc strict (tsconfig.base.json), hadolint (.hadolint.yaml). Ne pas re-relever en revue.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Règles par artefact — ids de la bibliothèque kit/ (routage par phase, AGENTS.kit.md §4).
+# design → proposal/design · implementation → tasks · review → checklist de revue.
+# ─────────────────────────────────────────────────────────────────────────────
+rules:
+  proposal:
+    - Rédiger les cas de mésusage et le threat modeling auth/révision (security.r6).
+    - Respecter le contrat REST : ressources, verbes, codes de statut (api-design).
+    - Aligner tout modèle de données sur le MCD/MLD/MPD figés (mcd, mld, mpd).
+  design:
+    - Architecture en couches, dépendances vers l'intérieur ; domaine sans framework (clean-archi-back, clean-archi-front).
+    - Découpage Nest par module ; DI partout ; zéro logique métier en contrôleur (nest).
+    - Composants/hooks purs ; état serveur→TanStack Query, global→Zustand, local→useState (react, state-management).
+    - Garde-fous sécurité : deny-by-default + ownership (authorization, nest-authz.r1/r2), Argon2id (password-hashing),
+      cookie JWT httpOnly+secure+sameSite + anti-énumération (authentication), config validée + pas de secret en dur (configuration, security.r2).
+  tasks:
+    - Valider toute entrée : DTO classe, @ValidateNested + @Type sur l'imbriqué (validation.r2/r4).
+    - Accès données paramétré (TypeORM) ; pas de $where Mongo dynamique (security.r5, data-access).
+    - Entités → DTO de réponse + mapping ; jamais de hashed_password renvoyé (clean-archi-back.r4/r5).
+    - Filtre d'exceptions global fail-closed, forme normalisée, aucune fuite (error-handling, security.r10).
+    - Journaliser les événements de sécurité sans secret/PII (security.r9, observability).
+    - Tests en AAA testant le comportement ; domaine de répétition espacée couvert en unitaire (testing-strategy, jest, vitest, cypress).
+    - Clés de cache stables + gestion des 3 états côté front (react-query, data-fetching).
+    - Accessibilité : labels, focus, rôles, alt-text (accessibility).

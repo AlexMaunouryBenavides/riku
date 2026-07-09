@@ -9,12 +9,17 @@
   "scripts": {
     "verify": "pnpm run typecheck && pnpm run lint && pnpm run test",
     "typecheck": "pnpm -r typecheck",
-    "lint": "pnpm -r lint",
+    "lint": "eslint .",
     "test": "pnpm -r test",
     "format": "prettier --check .",
     "format:write": "prettier --write ."
   },
   "devDependencies": {
-    "prettier": "^3.9.4"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.6.0",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.4",
+    "typescript": "catalog:",
+    "typescript-eslint": "^8.63.0"
   }
 }

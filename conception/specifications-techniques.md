@@ -17,6 +17,7 @@ communiquant en HTTPS/JSON. Deux bases : **MySQL** (relationnel, via TypeORM) et
 
 | Domaine | Choix | Statut |
 | --- | --- | --- |
+| Runtime | **Node.js 26.x** | décidé (G) — **écart assumé à `docker.r2`** |
 | Langage | **TypeScript** | figé (`kit typescript.md`) |
 | Backend | **NestJS** | figé (`kit nest.md`) |
 | Style d'API | **REST** | figé (`kit api-design.md`) |
@@ -34,6 +35,20 @@ communiquant en HTTPS/JSON. Deux bases : **MySQL** (relationnel, via TypeORM) et
 | Conteneurs | **Docker + docker-compose** | figé (`kit docker.md`) |
 | CI | **GitHub Actions** | figé (`kit ci-cd.md`) |
 | Déploiement | démo **locale `docker compose`** en priorité ; en ligne = bonus | décidé (F, à finaliser en phase 6) |
+
+> **(G) — Écart délibéré à `docker.r2` (« image de base épinglée à une LTS »).**
+> Le poste de développement, les images Docker (`node:26-alpine`) et la CI tournent tous sur **Node 26.x**,
+> une version _Current_ : Node 26 est sortie le 5 mai 2026 et ne passera LTS que le 28 octobre 2026,
+> soit après la soutenance. Le tag `lts` de l'image officielle désigne donc Node 24 (Krypton, EOL avril 2028).
+>
+> **Pourquoi cet écart :** privilégier la **cohérence dev ↔ image ↔ CI** sur un même runtime plutôt que de faire
+> diverger le poste et la production. Node 26 n'est pas en fin de vie (EOL avril 2029) et reçoit les correctifs
+> de sécurité ; l'écosystème du projet la supporte (`engines` de `typeorm@1.0.0` : `>=24.11.0` ; `argon2` expose
+> des binaires **N-API**, à ABI stable, donc aucun recompilage natif requis — vérifié).
+>
+> **Ce qu'on accepte :** Node.js ne recommande pas une version _Current_ pour la production, et la règle
+> `docker.r2` est un `guardrail`. L'écart est donc conscient et limité dans le temps : au 28 octobre 2026,
+> Node 26 devient LTS et l'écart se referme de lui-même, sans changer une ligne.
 
 ---
 

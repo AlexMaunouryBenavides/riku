@@ -19,7 +19,7 @@ l'**accès SQL + NoSQL** (phase 3), la **sécurité** (transverse) et les **test
 
 ## Vue d'ensemble (progression par phase)
 
-- [ ] **Phase 0** — Cadrage & environnement de travail _(reste 0.2, 0.3)_
+- [x] **Phase 0** — Cadrage & environnement de travail
 - [ ] **Phase 1** — Conception _(reste 1.9, 1.11)_
 - [ ] **Phase 2** — Socle technique (squelettes + infra locale) _(tu es ici)_
 - [ ] **Phase 3** — Implémentation backend
@@ -35,9 +35,8 @@ l'**accès SQL + NoSQL** (phase 3), la **sécurité** (transverse) et les **test
 _(CDA : « Installer et configurer son environnement de travail »)_
 
 - [x] **0.1 — Figer le périmètre MVP** · ✔ Validé — `conception/cas-utilisation.md` §1 (périmètre + hors-scope).
-- [ ] **0.2 — Installer la boîte à outils** (Node LTS, pnpm/npm, Nest CLI, Vite, Git, Docker Desktop) · ✔ Validé si : `node -v`, `docker -v`, `git -v`, `nest --version` répondent.
-      ⚠ **Bloqué** : `node -v` → **v25.4.0**, une version _Current_ (impaire), jamais promue LTS. Installer **Node 24 LTS**.
-      Le reste répond : pnpm 10.0.0 · git 2.47.0 · Docker 29.5.2 + Compose v5.1.4 · Nest CLI 11.0.21.
+- [x] **0.2 — Installer la boîte à outils** · ✔ Validé — Node **v26.4.0** · npm 11.14.1 · pnpm 10.0.0 · git 2.47.0 · Docker 29.5.2 + Compose v5.1.4 · Nest CLI 11.0.21.
+      _Note :_ Node 26 est une version _Current_, pas la LTS. Choix assumé et documenté — `specifications-techniques.md` §2, écart **(G)** à `docker.r2`.
 - [x] **0.3 — Installer MySQL + MongoDB en local** (via Docker) · ✔ Validé — `docker compose up -d` : les deux conteneurs passent `healthy` et acceptent une connexion **authentifiée** (MySQL 8.4.9 en `riku@%`, MongoDB 8.0.26 sur la base `riku`). Réalisé par le `docker-compose.yml` de la tâche 2.1.
       _Note :_ les services **MySQL80 et MongoDB natifs** de Windows ont été arrêtés et passés en démarrage `Disabled`. Les conteneurs occupent donc les ports standards **3306 / 27017** — une seule source de vérité, reproductible par un simple `docker compose up`.
 - [x] **0.4 — Initialiser le dépôt Git + structure monorepo** · `kit: monorepo.md`, `git-workflow.md` · ✔ Validé — commit `4a3a0ac` : `git init`, `.gitignore`, `pnpm-workspace.yaml` (`apps/*`, `packages/*`), scripts racine (`verify`/`typecheck`/`lint`/`test`), `packages/shared` vide. _(`apps/api` + `apps/web` viendront en 2.2/2.3.)_

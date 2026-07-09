@@ -20,7 +20,8 @@
 
 ## Prérequis manuels (à ma charge, pas la tienne)
 
-Node LTS, `pnpm`, Docker Desktop, Git installés et fonctionnels (`node -v`, `pnpm -v`, `docker -v`, `git -v`).
+Node 26.x (cf. `specifications-techniques.md` §2, écart (G)), `pnpm`, Docker Desktop, Git installés et
+fonctionnels (`node -v`, `pnpm -v`, `docker -v`, `git -v`).
 
 ## Cible — arborescence
 

@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "resolvePackageJsonExports": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "types": ["node", "jest"],
+    "sourceMap": true,
+    // TypeScript 6 refuse de deviner la racine des sources : `nest build`
+    // échoue (TS5011) sans un rootDir explicite.
+    "rootDir": "./src",
+    "outDir": "./dist",
+    // Surtout pas `incremental` : `nest build` efface dist/ (deleteOutDir) mais
+    // pas le .tsbuildinfo posé à côté. TypeScript conclut alors « rien à faire »
+    // et le build sort en 0 avec un dist/ vide. Faux positif garanti.
+    "incremental": false,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}

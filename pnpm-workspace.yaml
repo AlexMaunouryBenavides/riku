@@ -7,4 +7,6 @@ packages:
 # Versions partagées centralisées (monorepo.r6) : définies une fois, référencées
 # par "catalog:" dans chaque package. On ajoute ici les deps communes au fil des étapes.
 catalog:
-  typescript: ^5.9.3
+  # TypeScript 7.0 est publié mais inutilisable ici : typescript-eslint exige
+  # `<6.1.0` et ts-jest `<7`. On reste sur la 6.0, acceptée par les deux.
+  typescript: ^6.0.2

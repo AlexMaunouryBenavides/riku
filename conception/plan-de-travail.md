@@ -51,13 +51,13 @@ la **sécurité** (transverse) et les **tests** (§7). Vise le MVP de bout en bo
 ## 2. Conception
 
 - [x] **2.1 👤 Cas d'utilisation** (acteurs, CU, mésusages, RG-01→07) · ✔ `conception/cas-utilisation.md`.
-- [x] **2.2 👤 MCD (Merise)** · `kit: mcd.md` · ✔ `conception/mcd.drawio`.
-- [x] **2.3 👤 MLD (schéma relationnel)** · `kit: mld.md` · ✔ `conception/mld.drawio`.
-- [x] **2.4 👤 MPD** · `kit: mpd.md` · ✔ `conception/mpd.drawio`. Le script de création sera produit par une **migration TypeORM**, jamais à la main, jamais `synchronize`.
+- [x] **2.2 👤 MCD (Merise)** · `kit: mcd.md` · ✔ `conception/merise/mcd.drawio`.
+- [x] **2.3 👤 MLD (schéma relationnel)** · `kit: mld.md` · ✔ `conception/merise/mld.drawio`.
+- [x] **2.4 👤 MPD** · `kit: mpd.md` · ✔ `conception/merise/mpd.drawio`. Le script de création sera produit par une **migration TypeORM**, jamais à la main, jamais `synchronize`.
 - [x] **2.5 👤 Modèle documentaire MongoDB** · ✔ `conception/modele-donnees.md` §4.
-- [x] **2.6 👤 Diagramme de classes (UML)** · ✔ `conception/diagramme-classes.drawio`.
-- [x] **2.7 👤 Diagramme de séquence — UC10** _(CU pivot)_ · ✔ `conception/diagramme-sequence.drawio`.
-- [x] **2.8 👤 Diagrammes de séquence — UC01 & UC11** · ✔ Argon2id + anti-énumération, correction côté serveur.
+- [x] **2.6 👤 Diagramme de classes (UML)** · ✔ `conception/uml/diagramme-classes.drawio`.
+- [x] **2.7 👤 Diagramme de séquence — UC10** _(CU pivot)_ · ✔ `conception/uml/diagramme-sequence.drawio`.
+- [x] **2.8 👤 Diagrammes de séquence — UC01 & UC11** · ✔ `conception/uml/diagramme-sequence-inscription.drawio` (Argon2id + anti-énumération) et correction côté serveur.
 - [x] **2.9 👤 Spécifications techniques** · `kit: clean-archi-back.md`, `security.md` · ✔ `conception/specifications-techniques.md`.
 - [ ] **2.10 👤 Plan de tests (définition)** · `kit: _strategy.md` · ✔ Validé si : ce qui est testé (unitaire / intégration / e2e / sécurité) et la fonctionnalité représentative (UC10) sont désignés.
       _À faire avant d'écrire le premier test (§7). Peut se faire dès maintenant._
